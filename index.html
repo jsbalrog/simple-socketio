@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Socket IO</title>
+        <script type="text/javascript" src="socket.io.js"></script>
+    </head>
+    <body>
+        <script>
+        var socket = io.connect('http://localhost:4000');
+        socket.on('ping', function(data) {
+          console.log('ping');
+          socket.emit('pong');
+        });
+        </script>
+    </body>
+</html>
