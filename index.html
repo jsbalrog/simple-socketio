@@ -5,14 +5,49 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Socket IO</title>
         <script type="text/javascript" src="socket.io.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
     </head>
     <body>
-        <script>
+      <input type="text" id="username">
+      <button id="ping">Ping</button>
+      <div id="sent"></div>
+      <ul id="info">
+      </ul>
+      <script>
         var socket = io.connect('http://localhost:4000');
-        socket.on('ping', function(data) {
-          console.log('ping');
-          socket.emit('pong');
+        var $username = $('#username'),
+            $ping = $('#ping'),
+            $info = $('#info'),
+            $sent = $('#sent'),
+            pingSent = 0;
+
+        function addLi(message) {
+          $info.append('<li>' + message + '</li>');
+        }
+
+        // On username field change, fire a 'join' event to socket.io server,
+        // passing along the value of the field as username.
+        $username.on('change', function() {
+          socket.emit('join', {username: $username.val()});
         });
-        </script>
+
+        socket.on('userJoined', function(data) {
+            addLi(data.username + ' has joined');
+        });
+
+        $ping.on('click', function() {
+            socket.emit('ping', null, function(message) {
+                console.log(message);
+                if(message === 'ack') {
+                    pingSent++;
+                    $sent.html('Pings sent: ' + pingSent);
+                }
+            });
+        });
+
+        socket.on('ping', function(data) {
+            addLi(data.username + ' has pinged!');
+        });
+      </script>
     </body>
 </html>
