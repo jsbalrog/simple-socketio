@@ -17,6 +17,7 @@ io.sockets.on('connection', function(socket) {
     done('ack');
   });
 	
+	// Listen for client-side disconnect events (this will happen on a refresh).
 	socket.on('disconnect', function() {
 		socket.broadcast.emit('userDisconnect', { username: socket.username });
 	});
