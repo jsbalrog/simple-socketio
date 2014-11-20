@@ -35,6 +35,10 @@
             addLi(data.username + ' has joined');
         });
 
+				socket.on('userDisconnect', function(data) {
+					addLi(data.username + ' has left :(');
+				});
+
         $ping.on('click', function() {
             socket.emit('ping', null, function(message) {
                 console.log(message);
