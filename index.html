@@ -35,6 +35,7 @@
             addLi(data.username + ' has joined');
         });
 
+				// If a userDisconnect event is received, show msg
 				socket.on('userDisconnect', function(data) {
 					addLi(data.username + ' has left :(');
 				});
